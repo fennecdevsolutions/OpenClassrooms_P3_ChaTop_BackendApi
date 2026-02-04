@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "com.oc.ChatopApi.JWTSecret",
+  "type": "java.lang.String",
+  "description": "Secret key for JWT token generation. To be configured in env variables"
+}]}

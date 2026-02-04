@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.oc.ChatopApi.dto.ApiError;
+import com.oc.ChatopApi.dto.ApiErrorDto;
 import com.oc.ChatopApi.exception.UserAlreadyExistsException;
 import com.oc.ChatopApi.exception.UserNotFoundException;
 
@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<ApiError> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
-		ApiError error = new ApiError(
+	public ResponseEntity<ApiErrorDto> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
+		ApiErrorDto error = new ApiErrorDto(
 				HttpStatus.NOT_FOUND.value(),
 				HttpStatus.NOT_FOUND.name(),
 				ex.getMessage(),
@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
 				}
 	
 	@ExceptionHandler(UserAlreadyExistsException.class)
-	public ResponseEntity<ApiError> handleUserAlreadyExists(UserAlreadyExistsException ex, HttpServletRequest request) {
-		ApiError error = new ApiError(
+	public ResponseEntity<ApiErrorDto> handleUserAlreadyExists(UserAlreadyExistsException ex, HttpServletRequest request) {
+		ApiErrorDto error = new ApiErrorDto(
 				HttpStatus.CONFLICT.value(),
 				HttpStatus.CONFLICT.name(),
 				ex.getMessage(),

@@ -1,8 +1,7 @@
 package com.oc.ChatopApi.controller;
 
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oc.ChatopApi.dto.RegisterDto;
+import com.oc.ChatopApi.dto.UserDto;
 import com.oc.ChatopApi.model.User;
 import com.oc.ChatopApi.service.JWTService;
 import com.oc.ChatopApi.service.UserService;
@@ -30,20 +31,25 @@ public class UserController {
 	// Register New User
 	
 	@PostMapping ("/register")
-	public Map<String, String> registerUser (@RequestBody User user) {
+	public RegisterDto registerUser (@RequestBody User user) {
 		// insert user into database
 		userService.saveUser(user);
 		// generate token
 		String token = jwtService.generateToken(user.getEmail());
-		// return token for the frontend in JSON format {"token": "token_value"}
-		return Collections.singletonMap("token", token);
+		// return token for the front end in JSON format {"token": "token_value"}
+		return new RegisterDto (token);
 	}
 	
 	// Get connected/created user
 	@GetMapping("/me")
-	public User getCurrentUser (Principal principal){
-		// returns the connected user using the Spring Security "principal"
-		return userService.findUserByEmail(principal.getName());
+	public UserDto getCurrentUser (Principal principal){
+		User fetchedUser = userService.findUserByEmail(principal.getName());
+		return new UserDto (
+				fetchedUser.getId(),
+				fetchedUser.getName(),
+				fetchedUser.getEmail(),
+				fetchedUser.getCreated_at(),
+				fetchedUser.getUpdated_at()) ;
 	
 	}
 

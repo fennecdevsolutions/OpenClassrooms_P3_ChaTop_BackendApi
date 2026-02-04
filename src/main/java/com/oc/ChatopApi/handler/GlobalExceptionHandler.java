@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.oc.ChatopApi.dto.ApiErrorDto;
+import com.oc.ChatopApi.exception.InvalidCredentialsException;
 import com.oc.ChatopApi.exception.UserAlreadyExistsException;
 import com.oc.ChatopApi.exception.UserNotFoundException;
 
@@ -35,6 +36,19 @@ public class GlobalExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity
 				.status(HttpStatus.CONFLICT)
+				.body(error);
+		
+	}
+	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<ApiErrorDto> handleInvalidCredentials(InvalidCredentialsException ex, HttpServletRequest request) {
+		ApiErrorDto error = new ApiErrorDto(
+				HttpStatus.UNAUTHORIZED.value(),
+				HttpStatus.UNAUTHORIZED.name(),
+				ex.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity
+				.status(HttpStatus.UNAUTHORIZED)
 				.body(error);
 		
 	}

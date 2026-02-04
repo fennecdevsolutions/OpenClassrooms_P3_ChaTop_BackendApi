@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oc.ChatopApi.dto.RegisterDto;
+import com.oc.ChatopApi.dto.TokenDto;
 import com.oc.ChatopApi.dto.UserDto;
 import com.oc.ChatopApi.model.User;
-import com.oc.ChatopApi.service.JWTService;
 import com.oc.ChatopApi.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,19 +24,14 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private JWTService jwtService;
 	
 	// Register New User
 	
 	@PostMapping ("/register")
-	public RegisterDto registerUser (@RequestBody User user) {
+	public TokenDto registerUser (@RequestBody User user) {
 		// insert user into database
-		userService.saveUser(user);
-		// generate token
-		String token = jwtService.generateToken(user.getEmail());
-		// return token for the front end in JSON format {"token": "token_value"}
-		return new RegisterDto (token);
+		TokenDto token = userService.saveUser(user);
+		return token;
 	}
 	
 	// Get connected/created user
@@ -46,10 +40,17 @@ public class UserController {
 		User fetchedUser = userService.findUserByEmail(principal.getName());
 		return new UserDto (
 				fetchedUser.getId(),
-				fetchedUser.getName(),
 				fetchedUser.getEmail(),
+				fetchedUser.getName(),
 				fetchedUser.getCreated_at(),
 				fetchedUser.getUpdated_at()) ;
+	
+	}
+	
+	@PostMapping ("/login")
+	public TokenDto loginUser (@RequestBody User user) {
+		// Login user and get token
+		return userService.loginUser(user);
 	
 	}
 

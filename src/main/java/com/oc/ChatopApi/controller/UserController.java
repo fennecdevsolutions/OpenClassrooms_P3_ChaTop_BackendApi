@@ -1,4 +1,4 @@
-package com.oc.ChatopApi.controller;
+package com.oc.chatopapi.controller;
 
 import java.security.Principal;
 
@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oc.ChatopApi.dto.TokenDto;
-import com.oc.ChatopApi.dto.UserDto;
-import com.oc.ChatopApi.model.User;
-import com.oc.ChatopApi.service.UserService;
+import com.oc.chatopapi.dto.TokenDto;
+import com.oc.chatopapi.dto.UserDto;
+import com.oc.chatopapi.mapper.UserMapper;
+import com.oc.chatopapi.model.User;
+import com.oc.chatopapi.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+    private UserMapper userMapper;
 	
 	// Register New User
 	
@@ -38,12 +42,7 @@ public class UserController {
 	@GetMapping("/me")
 	public UserDto getCurrentUser (Principal principal){
 		User fetchedUser = userService.findUserByEmail(principal.getName());
-		return new UserDto (
-				fetchedUser.getId(),
-				fetchedUser.getEmail(),
-				fetchedUser.getName(),
-				fetchedUser.getCreated_at(),
-				fetchedUser.getUpdated_at()) ;
+		return userMapper.toDto(fetchedUser);
 	
 	}
 	

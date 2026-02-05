@@ -1,4 +1,4 @@
-package com.oc.ChatopApi.configuration;
+package com.oc.chatopapi.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,8 +21,11 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+		// Disable Cross-Site Request Forgery protection ==> de-acivation required for STATELESS sessions
 		.csrf(csrf -> csrf.disable()) 
+		// Set session policy to STATELESS (no session creation) ==> required for JWT authentication
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		// manage Http requests authorization
 		.authorizeHttpRequests(auth -> auth
 				// register and login are allowed without token
 				.requestMatchers("/api/auth/register","/api/auth/login").permitAll()
@@ -34,7 +39,10 @@ public class SecurityConfiguration {
 	    
 	}
 
-    
+    @Bean
+    PasswordEncoder passwordEncoder() {
+	    return new BCryptPasswordEncoder();
+	}
 
 	
 	

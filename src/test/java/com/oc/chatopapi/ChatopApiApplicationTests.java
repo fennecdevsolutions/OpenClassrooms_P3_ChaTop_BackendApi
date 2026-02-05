@@ -1,4 +1,4 @@
-package com.oc.ChatopApi;
+package com.oc.chatopapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

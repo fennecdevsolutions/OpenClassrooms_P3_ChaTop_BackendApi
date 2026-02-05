@@ -8,10 +8,10 @@
 		<version>4.0.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.oc.ChatopApi</groupId>
-	<artifactId>ChatopApi</artifactId>
+	<groupId>com.oc.chatopapi</groupId>
+	<artifactId>chatopapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ChatopApi</name>
+	<name>chatopapi</name>
 	<description>Backend API for Chatop project</description>
 	<url/>
 	<licenses>
@@ -90,6 +90,11 @@
 		    <version>0.11.5</version>
 		    <scope>runtime</scope>
 		</dependency>
+		<dependency>
+		    <groupId>org.mapstruct</groupId>
+		    <artifactId>mapstruct</artifactId>
+		    <version>1.5.5.Final</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -103,6 +108,11 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</path>
+						<path>
+		                	<groupId>org.mapstruct</groupId>
+		                	<artifactId>mapstruct-processor</artifactId>
+		               		<version>1.5.5.Final</version>
+		           		</path>
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>

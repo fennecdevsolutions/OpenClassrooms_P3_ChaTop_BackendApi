@@ -1,15 +1,15 @@
-package com.oc.ChatopApi.service;
+package com.oc.chatopapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.oc.ChatopApi.dto.TokenDto;
-import com.oc.ChatopApi.exception.InvalidCredentialsException;
-import com.oc.ChatopApi.exception.UserAlreadyExistsException;
-import com.oc.ChatopApi.exception.UserNotFoundException;
-import com.oc.ChatopApi.model.User;
-import com.oc.ChatopApi.repository.UserRepository;
+import com.oc.chatopapi.dto.TokenDto;
+import com.oc.chatopapi.exception.InvalidCredentialsException;
+import com.oc.chatopapi.exception.UserAlreadyExistsException;
+import com.oc.chatopapi.exception.UserNotFoundException;
+import com.oc.chatopapi.model.User;
+import com.oc.chatopapi.repository.UserRepository;
 
 import lombok.Data;
 

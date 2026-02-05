@@ -1,4 +1,4 @@
-package com.oc.ChatopApi.dto;
+package com.oc.chatopapi.dto;
 
 import java.time.Instant;
 

@@ -1,4 +1,4 @@
-package com.oc.ChatopApi.model;
+package com.oc.chatopapi.model;
 
 
 import java.sql.Timestamp;

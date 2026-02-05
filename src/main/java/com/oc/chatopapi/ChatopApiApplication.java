@@ -1,4 +1,4 @@
-package com.oc.ChatopApi;
+package com.oc.chatopapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

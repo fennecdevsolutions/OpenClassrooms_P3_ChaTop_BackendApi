@@ -1,14 +1,14 @@
-package com.oc.ChatopApi.service;
+package com.oc.chatopapi.service;
 
 
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.oc.ChatopApi.configuration.CustomProperties;
+import com.oc.chatopapi.exception.UserAuthenticationInvalidException;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -16,12 +16,13 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JWTService {
 	
-	@Autowired
-	private CustomProperties customProps;
+	@Value("${JWTSecret}")
+	private String JWTsecret;
+	
 	
 	// moved getting the secret key to function in order to be sure that CustomProperties is injected.
 	private SecretKey getSigningKey() {
-		return Keys.hmacShaKeyFor(customProps.getJWTSecret().getBytes());
+		return Keys.hmacShaKeyFor(JWTsecret.getBytes());
 	}
 	
 	
@@ -35,12 +36,17 @@ public class JWTService {
 	
 	// extracting the "sub" using the token (sub = email)
 	public String extractUsername(String token) {
+		try {
 	    return Jwts.parserBuilder()
 	            .setSigningKey(getSigningKey())
 	            .build()
 	            .parseClaimsJws(token)
 	            .getBody()
 	            .getSubject();
+	    }catch (Exception ex) {
+	    	throw new UserAuthenticationInvalidException ("Invalid token: " + ex.getMessage());
+	    }
+	    }
 	}
 	
-}
+

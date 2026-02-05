@@ -1,14 +1,15 @@
-package com.oc.ChatopApi.handler;
+package com.oc.chatopapi.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.oc.ChatopApi.dto.ApiErrorDto;
-import com.oc.ChatopApi.exception.InvalidCredentialsException;
-import com.oc.ChatopApi.exception.UserAlreadyExistsException;
-import com.oc.ChatopApi.exception.UserNotFoundException;
+import com.oc.chatopapi.dto.ApiErrorDto;
+import com.oc.chatopapi.exception.InvalidCredentialsException;
+import com.oc.chatopapi.exception.UserAlreadyExistsException;
+import com.oc.chatopapi.exception.UserAuthenticationInvalidException;
+import com.oc.chatopapi.exception.UserNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -42,6 +43,19 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(InvalidCredentialsException.class)
 	public ResponseEntity<ApiErrorDto> handleInvalidCredentials(InvalidCredentialsException ex, HttpServletRequest request) {
+		ApiErrorDto error = new ApiErrorDto(
+				HttpStatus.UNAUTHORIZED.value(),
+				HttpStatus.UNAUTHORIZED.name(),
+				ex.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity
+				.status(HttpStatus.UNAUTHORIZED)
+				.body(error);
+		
+	}
+	
+	@ExceptionHandler(UserAuthenticationInvalidException.class)
+	public ResponseEntity<ApiErrorDto> handleUserAuthenticationInvalid(UserAuthenticationInvalidException ex, HttpServletRequest request) {
 		ApiErrorDto error = new ApiErrorDto(
 				HttpStatus.UNAUTHORIZED.value(),
 				HttpStatus.UNAUTHORIZED.name(),

@@ -5,9 +5,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.oc.chatopapi.dto.TokenDto;
+import com.oc.chatopapi.dto.UserLoginDto;
+import com.oc.chatopapi.dto.UserRegisterDto;
 import com.oc.chatopapi.exception.InvalidCredentialsException;
 import com.oc.chatopapi.exception.UserAlreadyExistsException;
 import com.oc.chatopapi.exception.UserNotFoundException;
+import com.oc.chatopapi.mapper.UserMapper;
 import com.oc.chatopapi.model.User;
 import com.oc.chatopapi.repository.UserRepository;
 
@@ -26,20 +29,24 @@ public class UserService {
 	@Autowired
 	private JWTService jwtService;
 	
+	@Autowired
+	private UserMapper userMapper;
+	
 	
 	// Insert new user in database if email does not exist
-	public TokenDto saveUser (User newUser) {
+	public TokenDto saveUser (UserRegisterDto userDto) {
 		// Check if user already exists
-		if(userRepo.existsByEmail(newUser.getEmail())) {
+		if(userRepo.existsByEmail(userDto.getEmail())) {
 			throw new UserAlreadyExistsException(
-					"User with email " + newUser.getEmail() + " already exists!");		
+					"User with email " + userDto.getEmail() + " already exists!");		
 		}
 		//encode password before then store user in DB
-		String encodedPw = pwEncoder.encode(newUser.getPassword()); 
-		newUser.setPassword(encodedPw);
-		userRepo.save(newUser);
+		String encodedPw = pwEncoder.encode(userDto.getPassword());
+		User user = userMapper.toEntity(userDto);
+		user.setPassword(encodedPw);
+		userRepo.save(user);
 		// generate token and return it
-		String token = jwtService.generateToken(newUser.getEmail());
+		String token = jwtService.generateToken(user.getEmail());
 		return new TokenDto (token);	
 	}
 	
@@ -52,11 +59,11 @@ public class UserService {
 	
 	
 	// Login user and return JWT token if password match
-	public TokenDto loginUser (User user) {
-		User registeredUser = userRepo.findByEmail(user.getEmail())
+	public TokenDto loginUser (UserLoginDto userLoginDto) {
+		User registeredUser = userRepo.findByEmail(userLoginDto.getEmail())
 				.orElseThrow(()-> new InvalidCredentialsException("Invalid email or password"));
 	// verify password
-		if(!pwEncoder.matches(user.getPassword(),registeredUser.getPassword())) {
+		if(!pwEncoder.matches(userLoginDto.getPassword(),registeredUser.getPassword())) {
 			throw new InvalidCredentialsException("Invalid email or password");
 		}
 		

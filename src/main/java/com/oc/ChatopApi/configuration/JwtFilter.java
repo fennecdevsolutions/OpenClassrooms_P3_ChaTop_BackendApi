@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.oc.chatopapi.exception.UserAuthenticationInvalidException;
+
 import com.oc.chatopapi.exception.UserNotFoundException;
 import com.oc.chatopapi.model.User;
 import com.oc.chatopapi.service.JWTService;
@@ -42,7 +42,6 @@ public class JwtFilter extends OncePerRequestFilter{
         String username = null;
         String jwt = null;
         
-        try {      
 	        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 	            // extracting the token String from header
 	        	jwt = authorizationHeader.substring(7);
@@ -66,11 +65,6 @@ public class JwtFilter extends OncePerRequestFilter{
 	            SecurityContextHolder.getContext().setAuthentication(authenticationToken);  
 	        }
 	        chain.doFilter(request, response);
-        } catch (UserNotFoundException ex) {
-        	throw ex;
-        } catch (UserAuthenticationInvalidException ex) {
-        	throw ex;
-        }
         
     }
 }

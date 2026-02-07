@@ -8,8 +8,10 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.oc.chatopapi.exception.UserAuthenticationInvalidException;
+import com.oc.chatopapi.exception.InvalidCredentialsException;
 
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -43,10 +45,12 @@ public class JWTService {
 	            .parseClaimsJws(token)
 	            .getBody()
 	            .getSubject();
-	    }catch (Exception ex) {
-	    	throw new UserAuthenticationInvalidException ("Invalid token: " + ex.getMessage());
+		} catch (ExpiredJwtException ex) {
+	        throw new InvalidCredentialsException("JWT token expired");
+	    } catch (JwtException | IllegalArgumentException ex) {
+	        throw new InvalidCredentialsException("Invalid JWT token");
 	    }
-	    }
+	}
 	}
 	
 

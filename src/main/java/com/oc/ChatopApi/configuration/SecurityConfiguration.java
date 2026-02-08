@@ -41,7 +41,10 @@ public class SecurityConfiguration {
 						"/swagger-ui/**",
 						"/swagger-ui.html",
 						"/swagger-resources/**",
-						"/webjars/**").permitAll()
+						"/webjars/**",
+						"/images/**",
+						"/error").permitAll()
+				.requestMatchers("/api/rentals/**").authenticated()
 				// all other requests require authentication token
 				.anyRequest().authenticated()
 	            	);
@@ -72,4 +75,6 @@ public class SecurityConfiguration {
 	}
 	
 }
+
+
 

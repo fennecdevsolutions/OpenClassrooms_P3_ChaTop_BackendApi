@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
-import com.oc.chatopapi.exception.UserNotFoundException;
 import com.oc.chatopapi.model.User;
 import com.oc.chatopapi.service.JWTService;
 import com.oc.chatopapi.service.UserService;
@@ -38,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter{
             throws ServletException, IOException {
 
         final String authorizationHeader = request.getHeader("Authorization");
-       
+
         String username = null;
         String jwt = null;
         
@@ -53,14 +52,14 @@ public class JwtFilter extends OncePerRequestFilter{
 	        	// add exception handling for not found user
 	        	
 	        	User user = this.userService.findUserByEmail(username);
-	        	
+	        
 	            // Create an authentication token and fill it with fetched User, null for credentials, empty roles array since no roles defined in the project)
 	            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 	                    user.getEmail(), null, new ArrayList<>());
 	            
 	            // add meta data from the request to the authentication token
 	            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-	            
+	 
 	            //update the Security Context with the user authentication token 
 	            SecurityContextHolder.getContext().setAuthentication(authenticationToken);  
 	        }

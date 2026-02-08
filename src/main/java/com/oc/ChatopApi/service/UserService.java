@@ -9,7 +9,7 @@ import com.oc.chatopapi.dto.UserLoginDto;
 import com.oc.chatopapi.dto.UserRegisterDto;
 import com.oc.chatopapi.exception.InvalidCredentialsException;
 import com.oc.chatopapi.exception.UserAlreadyExistsException;
-import com.oc.chatopapi.exception.UserNotFoundException;
+import com.oc.chatopapi.exception.NotFoundException;
 import com.oc.chatopapi.mapper.UserMapper;
 import com.oc.chatopapi.model.User;
 import com.oc.chatopapi.repository.UserRepository;
@@ -54,8 +54,15 @@ public class UserService {
 	public User findUserByEmail(String email) {
 		
 		return userRepo.findByEmail(email)
-				.orElseThrow(()-> new UserNotFoundException("User with email " + email + " not found"));
+				.orElseThrow(()-> new NotFoundException("User with email " + email + " not found"));
 	}
+	
+	// fetch user by Id 
+		public User findUserById(Integer id) {
+			
+			return userRepo.findById(id)
+					.orElseThrow(()-> new NotFoundException("User not found"));
+		}
 	
 	
 	// Login user and return JWT token if password match

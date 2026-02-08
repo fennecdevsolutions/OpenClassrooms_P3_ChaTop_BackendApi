@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.oc.chatopapi.dto.ApiErrorDto;
 import com.oc.chatopapi.exception.InvalidCredentialsException;
 import com.oc.chatopapi.exception.UserAlreadyExistsException;
-import com.oc.chatopapi.exception.UserNotFoundException;
+import com.oc.chatopapi.exception.NotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	
-	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<ApiErrorDto> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<ApiErrorDto> handleNotFound(NotFoundException ex, HttpServletRequest request) {
 		ApiErrorDto error = new ApiErrorDto(
 				HttpStatus.NOT_FOUND.value(),
 				HttpStatus.NOT_FOUND.name(),

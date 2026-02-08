@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserCurrentDto {
+public class UserDto {
 	private String email;
 	private String name;
 	private Timestamp created_at;

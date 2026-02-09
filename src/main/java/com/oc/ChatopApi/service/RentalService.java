@@ -29,7 +29,7 @@ import com.oc.chatopapi.repository.RentalRepository;
 public class RentalService {
 	
 	
-	private String uploadDirectory = "src/main/resources/static/images/";
+	private String uploadDirectory = "uploads/images/";
 	
 	
 	private String serverPort = "3001";

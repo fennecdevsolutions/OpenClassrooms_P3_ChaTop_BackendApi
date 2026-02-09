@@ -69,7 +69,7 @@ public class RentalController {
 	@Operation (summary = "Create Rental", description = "Create new rental and return success message")
 	@ApiResponses(value = {
 	    @ApiResponse(responseCode = "201", description = "Rental created successfully",
-	    			content = @Content(schema = @Schema(implementation = TokenDto.class))),
+	    			content = @Content(schema = @Schema(implementation = SuccessMessageDto.class))),
 	    @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing token",
                 	content = @Content(schema = @Schema(implementation = ApiErrorDto.class)))
 			})
@@ -82,7 +82,7 @@ public class RentalController {
 	@Operation (summary = "Update Rental", description = "Update existing rental and return success message")
 	@ApiResponses(value = {
 	    @ApiResponse(responseCode = "201", description = "Rental updated successfully",
-	    			content = @Content(schema = @Schema(implementation = TokenDto.class))),
+	    			content = @Content(schema = @Schema(implementation = SuccessMessageDto.class))),
 	    @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid or missing token",
 	               	content = @Content(schema = @Schema(implementation = ApiErrorDto.class))),
 	    @ApiResponse(responseCode = "404", description = "Rental not found",

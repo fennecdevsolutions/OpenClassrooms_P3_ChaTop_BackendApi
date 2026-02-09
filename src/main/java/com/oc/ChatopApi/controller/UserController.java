@@ -56,7 +56,7 @@ public class UserController {
 	}
 	
 	// Get connected/created user
-	@Operation (summary = "Connected User", description = "Get the connected user information")
+	@Operation (summary = "Get Connected User", description = "Get the connected user information")
 	@ApiResponses(value = {
 		    @ApiResponse(responseCode = "200", description = "User information retrieved successfully",
 		                content = @Content(schema = @Schema(implementation = UserDto.class))),

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.oc.chatopapi.dto.ApiErrorDto;
 import com.oc.chatopapi.exception.InvalidCredentialsException;
+import com.oc.chatopapi.exception.MessageSendingException;
 import com.oc.chatopapi.exception.UserAlreadyExistsException;
 import com.oc.chatopapi.exception.NotFoundException;
 
@@ -49,6 +50,19 @@ public class GlobalExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity
 				.status(HttpStatus.UNAUTHORIZED)
+				.body(error);
+		
+	}
+	
+	@ExceptionHandler(MessageSendingException.class)
+	public ResponseEntity<ApiErrorDto> handleMessageSending(MessageSendingException ex, HttpServletRequest request) {
+		ApiErrorDto error = new ApiErrorDto(
+				HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				HttpStatus.INTERNAL_SERVER_ERROR.name(),
+				ex.getMessage(),
+				request.getRequestURI());
+		return ResponseEntity
+				.status(HttpStatus.INTERNAL_SERVER_ERROR)
 				.body(error);
 		
 	}

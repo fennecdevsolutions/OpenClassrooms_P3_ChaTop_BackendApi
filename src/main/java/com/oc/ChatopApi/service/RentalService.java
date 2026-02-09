@@ -32,7 +32,6 @@ public class RentalService {
 	private String uploadDirectory = "src/main/resources/static/images/";
 	
 	
-	
 	private String serverPort = "3001";
 	
 	@Autowired
@@ -40,6 +39,7 @@ public class RentalService {
 	
 	@Autowired
 	private RentalMapper rentalMapper;
+	
 	
 	@Autowired
 	private UserService userService;
@@ -99,6 +99,9 @@ public class RentalService {
 			rentalRepo.save(rentalMapper.updateRental(rentalUpdateDto, fetchedRental));
 			return new SuccessMessageDto ("Rental updated!");
 			}
+		
+		
+		
 	
 	
 

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,7 +78,7 @@ public class RentalController {
 		return rentalService.createRental(rentalCreateDto, principal);
 		}
 	
-	// Create Rental 
+	// Update Rental 
 	@Operation (summary = "Update Rental", description = "Update existing rental and return success message")
 	@ApiResponses(value = {
 	    @ApiResponse(responseCode = "201", description = "Rental updated successfully",
@@ -89,9 +88,9 @@ public class RentalController {
 	    @ApiResponse(responseCode = "404", description = "Rental not found",
         content = @Content(schema = @Schema(implementation = ApiErrorDto.class)))
 			})
-		@PutMapping
-		public SuccessMessageDto updateRental (@RequestBody RentalUpdateDto rentalUpdateDto) {
-		return rentalService.updateRental(rentalUpdateDto);
+		@PutMapping("/{id}")
+		public SuccessMessageDto updateRental (@PathVariable Integer id, @ModelAttribute RentalUpdateDto rentalUpdateDto) {
+		return rentalService.updateRental(id, rentalUpdateDto);
 		}
 	
 	

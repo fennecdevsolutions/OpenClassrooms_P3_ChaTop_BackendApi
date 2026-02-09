@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserDto {
+	private Integer id;
 	private String email;
 	private String name;
 	private Timestamp created_at;

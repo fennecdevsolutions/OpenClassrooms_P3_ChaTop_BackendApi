@@ -4,12 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.Principal;
-import java.util.Optional;
+import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +29,7 @@ import com.oc.chatopapi.repository.RentalRepository;
 public class RentalService {
 	
 	
-	private String uploadDirectory = "assets/images/";
+	private String uploadDirectory = "src/main/resources/static/images/";
 	
 	
 	
@@ -61,16 +60,18 @@ public class RentalService {
 
 	//Create new rental
 		public SuccessMessageDto createRental (RentalCreateDto rentalCreateDto, Principal principal) {
-			System.out.println("uploadDirectory path: " + uploadDirectory); // Temporary debug line
+			Integer userId = userService.findUserByEmail(principal.getName()).getId();
+			//create unique Id for image
+			String uniqueId = UUID.randomUUID().toString().substring(0,8);
 			try {
 			// Get picture file	
 			MultipartFile file = rentalCreateDto.getPicture();
 			// create unique filename
-			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-			 System.out.println("file name: " + fileName); // Temporary debug line
+			String ext = FilenameUtils.getExtension(file.getOriginalFilename());
+			String extention = ext.isEmpty() ? "" : "." + ext;
+			String fileName = userId.toString() + "_" + uniqueId + extention;
 			//set file path
 			Path path = Paths.get(uploadDirectory + fileName);
-			System.out.println("file path: " + path); // Temporary debug line
 			// Create folder if not existing
 			Files.createDirectories(path.getParent());
 			// save image file
@@ -80,7 +81,7 @@ public class RentalService {
 			String imageUrl = "http://localhost:" + serverPort + "/images/" + fileName;
 			rental.setPicture(imageUrl);
 			// get creator/owner id
-			rental.setOwner_id(userService.findUserByEmail(principal.getName()).getId());
+			rental.setOwner_id(userId);
 			Rental createdRental = rentalRepo.save(rental);
 			if (createdRental.getId()==null) {
 				throw new RentalCreateUpdateException("Error during rental creation!");
@@ -92,8 +93,8 @@ public class RentalService {
 		}
 		
 	//Update existing rental
-		public SuccessMessageDto updateRental (RentalUpdateDto rentalUpdateDto) {
-			Rental fetchedRental = rentalRepo.findByName(rentalUpdateDto.getName())
+		public SuccessMessageDto updateRental (Integer id,RentalUpdateDto rentalUpdateDto) {
+			Rental fetchedRental = rentalRepo.findById(id)
 					.orElseThrow(()-> new NotFoundException("Rental does not exist!"));
 			rentalRepo.save(rentalMapper.updateRental(rentalUpdateDto, fetchedRental));
 			return new SuccessMessageDto ("Rental updated!");

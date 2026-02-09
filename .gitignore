@@ -1,5 +1,5 @@
 HELP.md
-assets/images/
+src/main/resources/static/images/
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
